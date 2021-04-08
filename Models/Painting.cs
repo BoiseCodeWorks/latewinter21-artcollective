@@ -11,5 +11,8 @@ namespace latewinter_artcollective.Models
     public string Description { get; set; }
     public int? Year { get; set; }
     public int ArtistId { get; set; }
+
+    //you only need to add this if you are trying to populate
+    public Artist Artist { get; set; }
   }
 }

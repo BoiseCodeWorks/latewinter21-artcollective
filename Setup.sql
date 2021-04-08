@@ -5,7 +5,7 @@ USE artcollective;
 -- CREATE TABLE artists(
 --   id INT NOT NULL AUTO_INCREMENT,
 --   name VARCHAR(255) NOT NULL,
---   description VARCHAR(255),
+--   description VARCHAR(255) DEFAULT 'This is a description',
 --   age INT NOT NULL,
 
 --   PRIMARY KEY (id)

@@ -61,9 +61,25 @@ namespace latewinter_artcollective.Repositories
 
     internal IEnumerable<Painting> GetByArtistId(int id)
     {
-      string sql = "SELECT * FROM paintings WHERE artistId = @id;";
+      // string sql = "SELECT * FROM paintings WHERE artistId = @id;";
 
-      return _db.Query<Painting>(sql, new { id });
+      // return _db.Query<Painting>(sql, new { id });
+
+
+      string sql = @"
+      SELECT 
+      p.*,
+      a.*
+      FROM paintings p
+      JOIN artists a ON p.artistId = a.id
+      WHERE artistId = @id;";
+
+      return _db.Query<Painting, Artist, Painting>(sql, (painting, artist) =>
+      {
+        painting.Artist = artist;
+        return painting;
+      }, new { id }, splitOn: "id");
+
     }
   }
 }
