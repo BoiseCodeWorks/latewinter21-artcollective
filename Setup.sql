@@ -36,3 +36,30 @@ USE artcollective;
 --     REFERENCES artists (id)
 --     ON DELETE CASCADE
 -- )
+
+
+-- CREATE TABLE profiles
+-- (
+--   id VARCHAR(255) NOT NULL,
+--   email VARCHAR(255) NOT NULL,
+--   name VARCHAR(255),
+--   picture VARCHAR(255),
+--   PRIMARY KEY (id)
+-- );
+
+-- CREATE TABLE admissions
+-- (
+--   id INT NOT NULL AUTO_INCREMENT,
+--   date VARCHAR(255) NOT NULL,
+--   buyerId VARCHAR(255),
+
+--   PRIMARY KEY (id),
+
+--   FOREIGN KEY (buyerId)
+--     REFERENCES profiles (id)
+--     ON DELETE CASCADE
+-- );
+
+
+-- DROP TABLE admissions;
+-- DROP TABLE profiles;

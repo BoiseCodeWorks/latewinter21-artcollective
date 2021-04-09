@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using latewinter_artcollective.Repositories;
 using latewinter_artcollective.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,10 +39,43 @@ namespace latewinter_artcollective
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "latewinter_artcollective", Version = "v1" });
       });
 
+
+      // REVIEW[epic=Authentication] creates functionality for authentication
+      services.AddAuthentication(options =>
+        {
+          options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+          options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+          options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+          options.Audience = Configuration["Auth0:Audience"];
+        });
+
+      // REVIEW[epic=Authentication] creates functionality for hitting server from client
+      services.AddCors(options =>
+        {
+          options.AddPolicy("CorsDevPolicy", builder =>
+              {
+                builder
+                          .WithOrigins(new string[]{
+                            "http://localhost:8080",
+                            "http://localhost:8081"
+                          })
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowCredentials();
+              });
+        });
+
+
       services.AddTransient<ArtistsService>();
       services.AddTransient<ArtistsRepository>();
       services.AddTransient<PaintingsService>();
       services.AddTransient<PaintingsRepository>();
+      services.AddTransient<ProfilesService>();
+      services.AddTransient<ProfilesRepository>();
+      services.AddTransient<AdmissionsService>();
+      services.AddTransient<AdmissionsRepository>();
 
       services.AddScoped<IDbConnection>(x => CreateDbConnection());
     }
@@ -60,11 +94,15 @@ namespace latewinter_artcollective
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "latewinter_artcollective v1"));
+        app.UseCors("CorsDevPolicy");
       }
 
       app.UseHttpsRedirection();
 
       app.UseRouting();
+
+      //NOTE Runs authentication process
+      app.UseAuthentication();
 
       app.UseAuthorization();
 
