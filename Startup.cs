@@ -52,6 +52,7 @@ namespace latewinter_artcollective
         });
 
       // REVIEW[epic=Authentication] creates functionality for hitting server from client
+      //make sure to put app.UseCors("CorsDevPolicy"); on under if env.isdevelopment
       services.AddCors(options =>
         {
           options.AddPolicy("CorsDevPolicy", builder =>
@@ -95,6 +96,7 @@ namespace latewinter_artcollective
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "latewinter_artcollective v1"));
         app.UseCors("CorsDevPolicy");
+        //^ to enable client - server interaction
       }
 
       app.UseHttpsRedirection();
