@@ -13,7 +13,7 @@ namespace latewinter_artcollective.Controllers
   public class AdmissionsController : ControllerBase
   {
 
-    public AdmissionsService _service { get; set; }
+    private readonly AdmissionsService _service { get; set; }
     public AdmissionsController(AdmissionsService service)
     {
       _service = service;
